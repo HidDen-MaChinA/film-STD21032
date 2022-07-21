@@ -1,0 +1,164 @@
+openapi: 3.0.1
+info:
+  title: STD21032 API
+  description: 'Global description of my API'
+  version: 1.0.0
+servers:
+ - url: https://STD21032.com
+tags: 
+  - name: Cinema
+    description: sale de cinema salle de cinema
+  - name: films
+    description: film choisi dans chaque salle de cinema
+  - name: projection
+    description: les projections faite dans les salle 
+paths:
+  /Cinema/{number}:
+    get:
+      tags:
+      - Cinema
+      parameters:
+      - name: number
+        in: path
+        required: true
+        description: ciname room available from 1 to 2
+        schema:
+          type: integer
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/room'
+        404:
+          description: not found
+          content:
+            html/plain text:
+              example: <h1>not found</h1>
+  /films:
+    get:
+      tags:
+      - films
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getfilms'
+        404:
+          description: not found
+          content:
+            html/plain text:
+              example: <h1>not found</h1>
+  /films/{id}:
+    delete:
+      tags:
+      - films
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: delete film by id
+        schema:
+          type: integer
+      responses:
+        200:
+          description: deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+        404:
+          description: not found
+          content:
+            html/plain text:
+              example: <h1>not found</h1>
+  /projection:
+    get:
+      tags:
+      - projection
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/getProjection'
+        404:
+          description: not found
+          content:
+            html/plain text:
+              example: <h1>not found</h1>
+  /projection/{id}:
+    delete:
+      tags:
+      - projection
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: delete projection by id
+        schema:
+          type: integer
+      responses:
+        200:
+          description: deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+        404:
+          description: not found
+          content:
+            html/plain text:
+              example: <h1>not found</h1>              
+components:
+  schemas:
+    room:
+      type: object
+      properties:
+        salle number:
+          type: integer
+          example: 1
+        capacity:
+          type: number
+          example: 23
+    getfilms:
+      type: object
+      properties:
+        titre:
+          type: string
+          example: 'la belle et la bete'
+        duree:
+          type: string
+          example: '2:34'
+        resume:
+          type: string
+          example: 'film sur une belle meuf et un type bete'
+        realisateur:
+          type: string
+          example: 'moi'
+        date_sortie:
+          type: string
+          example: '1999/06/06'
+    getProjection:
+        type: object
+        properties:
+          films:
+            $ref: '#/components/schemas/getfilms'
+          room:
+            $ref: '#/components/schemas/room'
+            
+          
