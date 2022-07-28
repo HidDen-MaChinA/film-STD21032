@@ -1,25 +1,41 @@
 
 openapi: 3.0.1
 info:
-  title: STD21032 API
-  description: 'Global description of my API'
+  title: cinema gestion API
+  description: 'api created for the gestion of a cinema'
   version: 1.0.0
 servers:
  - url: https://STD21032.com
 tags: 
-  - name: Cinema
+  - name: room
     description: sale de cinema salle de cinema
   - name: films
     description: film choisi dans chaque salle de cinema
   - name: projection
     description: les projections faite dans les salle 
 paths:
-  /Cinema/{room}:
+  /room:
+     get:
+      tags:
+      - room
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/room'
+        404:
+          description: not found
+          content:
+            html/plain text:
+              example: <h1>not found</h1>
+  /room/{id}:
     get:
       tags:
-      - Cinema
+      - room
       parameters:
-      - name: room
+      - name: id
         in: path
         required: true
         description: ciname room A and B
@@ -116,6 +132,37 @@ paths:
       responses:
         200:
           description: 'update films with id:'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+        404:
+          description: not found
+          content:
+            html/plain text:
+              example: <h1>not found</h1>
+    put:
+      tags:
+      - films
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: update film using id
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createfilms'
+      responses:
+        200:
+          description: 'change films with id:'
           content:
             application/json:
               schema:
