@@ -1,4 +1,3 @@
-
 openapi: 3.0.1
 info:
   title: cinema gestion API
@@ -84,7 +83,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/films'
+                $ref: '#/components/schemas/film'
         404:
           description: not found
           content:
@@ -239,6 +238,31 @@ paths:
                   id:
                     type: integer
                     example: 1  
+  /projection/{projection_date}:
+    get:
+      tags:
+      - projection
+      parameters:
+      - name: projection_date
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '2004/12/12'
+      responses:
+        200:
+          description: get a array of object that contains all projection
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/getProjection'
+        404:
+          description: not found
+          content:
+            html/plain text:
+              example: <h1>not found</h1>
   /projection/{id}:
     patch:
       tags:
@@ -308,9 +332,12 @@ components:
         capacity:
           type: number
           example: 23
-    films:
+    film:
       type: object
       properties:
+        id_film:
+          type: number
+          example: 2
         titre:
           type: string
           example: 'la belle et la bete'
@@ -332,7 +359,7 @@ components:
     getfilms:
       type: array
       items:
-        $ref: '#/components/schemas/films'
+        $ref: '#/components/schemas/film'
     createfilms:
       type: object
       properties:
@@ -356,7 +383,14 @@ components:
           example: 'fantaisie,horreur...'
     getProjection:
         properties:
-          films:
-            $ref: '#/components/schemas/films'
+          id:
+            type: number
+            example: 1
+          film:
+            $ref: '#/components/schemas/film'
           room:
             $ref: '#/components/schemas/room'
+          projection_date:
+            type: string
+            example: '2004/13/12'
+              
